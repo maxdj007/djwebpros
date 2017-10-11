@@ -362,8 +362,31 @@ public class LoginTokenizerDAOImpl implements LoginTokenizerDAO {
 	}
 
 	public Token fetchToken(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Session session = factory.openSession();
+		Transaction tx = null;
+		Token token = null;
+		try {
+			tx = session.beginTransaction();
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<Token> query = builder.createQuery(Token.class);
+			Root<Token> root = query.from(Token.class);
+			query.select(root).where(builder.equal(root.get("userHash"), user.getUserHash()));
+			Query<Token> q = session.createQuery(query);
+			token = q.getSingleResult();
+			// log here
+			tx.commit();
+		} catch (HibernateException e) {
+			// LOG this
+			if (tx != null)
+				tx.rollback();
+		} catch (RuntimeException runtimeException) {
+			// LOG this
+		} finally {
+			session.close();
+		}
+		return token;
+		
 	}
 
 	public MethodCallReturn updateToken(Token token) {
