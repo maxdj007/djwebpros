@@ -81,9 +81,9 @@ public interface LoginTokenizerDAO {
 	 * add token to the DB
 	 * 
 	 * @param token
-	 * @return object of Token
+	 * @return Object of MethodCallReturn
 	 */
-	Token addToken(Token token);
+	MethodCallReturn addToken(Token token);
 	
 	/**
 	 * fetch token for a single user 
