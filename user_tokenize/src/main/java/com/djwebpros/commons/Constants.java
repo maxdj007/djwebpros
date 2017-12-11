@@ -7,6 +7,10 @@ public class Constants {
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_ERROR_VALUE_FALSE = "FALSE";
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_ERROR_VALUE_TRUE = "TRUE";
 	
+	public static final String USER_LEVEL_ADMIN = "ADMIN";
+	
+	
+	
 	
 	
 	

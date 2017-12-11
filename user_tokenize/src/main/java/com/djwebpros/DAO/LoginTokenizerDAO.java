@@ -3,12 +3,15 @@ package com.djwebpros.DAO;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.djwebpros.commons.MethodCallReturn;
 import com.djwebpros.models.Token;
 import com.djwebpros.models.User;
 import com.djwebpros.models.UserLevel;
 import com.djwebpros.models.UserType;
 
+@Component
 public interface LoginTokenizerDAO {
 	
 	/**
@@ -124,7 +127,7 @@ public interface LoginTokenizerDAO {
 	 * @param token
 	 * @return object of MethodCallReturn
 	 */
-	MethodCallReturn deleteTokens(Token token);
+	MethodCallReturn deleteToken(Token token);
 	
 	/**
 	 * get user level from the db on the basis of UserLevel id

@@ -15,6 +15,9 @@
 		<property name="hibernate.current_session_context_class">thread</property>
 
 		<mapping class="com.djwebpros.models.User" />
+		<mapping class="com.djwebpros.models.Token" />
+		<mapping class="com.djwebpros.models.UserLevel" />
+		<mapping class="com.djwebpros.models.UserType" />
 
 	</session-factory>
 </hibernate-configuration>
