@@ -5,10 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.djwebpros.DAO.LoginTokenizerDAO;
 import com.djwebpros.commons.Constants;
-import com.djwebpros.models.Token;
-import com.djwebpros.models.TokenResponseModel;
+import com.djwebpros.models.User;
+import com.djwebpros.models.UserResponseModel;
 import com.djwebpros.service.UserService;
 
 @Controller
@@ -18,19 +17,15 @@ public class HandShakeController {
 	private UserService userService;
 	
 	@RequestMapping("/hello")
-	public @ResponseBody TokenResponseModel handShakeInitializer(){
-		TokenResponseModel newToken = new TokenResponseModel();
-		Token token = new Token();
-		token.setId(1);
-		token.setToken("cooltoken");
-		token.setLoggedIn(0);
-		token.setValid(false);
-		token.setUser_hash("afddsfasdfsdfasdfasdfasfd");
-		newToken.setToken(token);
-		newToken.setError(false);
-		newToken.setMessage("hurray");
-		newToken.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
-		return  newToken;
+	public @ResponseBody UserResponseModel handShakeInitializer(){
+		UserResponseModel newResponse = new UserResponseModel();
+		int id =1;
+		User user = userService.getUserById(id);
+		newResponse.setError(false);
+		newResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
+		newResponse.setMessage("This is a test message");
+		newResponse.setUser(user);
+		return  newResponse;
 	}
 	
 }

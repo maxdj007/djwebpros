@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -57,11 +58,11 @@ public class User implements Serializable {
 	@Column(name="mobile_number", nullable = true, length = 15)
 	private String mobileNumber;
 	
-	@Column(name="user_level")
+	@JoinColumn(name="user_level")
 	@ManyToOne
 	private UserLevel userLevel;
 	
-	@Column(name="user_type", nullable = true)
+	@JoinColumn(name="user_type", nullable = true)
 	@ManyToOne
 	private UserType userType;
 	
