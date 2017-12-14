@@ -2,12 +2,15 @@ package com.djwebpros.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.djwebpros.commons.Constants;
 import com.djwebpros.models.User;
 import com.djwebpros.models.UserResponseModel;
+import com.djwebpros.service.TokenService;
 import com.djwebpros.service.UserService;
 
 @Controller
@@ -15,6 +18,9 @@ public class HandShakeController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TokenService tokenService;
 	
 	@RequestMapping("/hello")
 	public @ResponseBody UserResponseModel handShakeInitializer(){
@@ -27,5 +33,20 @@ public class HandShakeController {
 		newResponse.setUser(user);
 		return  newResponse;
 	}
+	
+	@RequestMapping("/noHello")
+	public @ResponseBody String handShakeInitializer1(){
+		UserResponseModel newResponse = new UserResponseModel();
+		int id =1;
+		User user = userService.getUserById(id);
+		newResponse.setError(false);
+		newResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
+		newResponse.setMessage("This is a test message");
+		newResponse.setUser(user);
+		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
+	}
+	
+
+	
 	
 }
