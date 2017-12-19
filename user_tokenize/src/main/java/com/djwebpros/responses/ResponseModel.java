@@ -1,4 +1,4 @@
-package com.djwebpros.models;
+package com.djwebpros.responses;
 
 public class ResponseModel {
 	

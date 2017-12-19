@@ -1,7 +1,9 @@
 /**
  * 
  */
-package com.djwebpros.models;
+package com.djwebpros.responses;
+
+import com.djwebpros.models.User;
 
 /**
  * @author DJ

@@ -23,6 +23,6 @@ public class UserSignUpController {
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST, consumes = "text/plain")
 	public @ResponseBody String signUp(@RequestBody String postPayload){
 		JSONObject postJSONData = new JSONObject(postPayload);
-		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
+		return  null;
 	}
 }

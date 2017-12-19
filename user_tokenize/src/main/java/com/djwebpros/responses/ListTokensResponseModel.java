@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.djwebpros.models;
+package com.djwebpros.responses;
 
 import java.util.List;
+
+import com.djwebpros.models.Token;
 
 /**
  * @author DJ
