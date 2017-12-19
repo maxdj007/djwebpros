@@ -18,7 +18,7 @@ import com.djwebpros.commons.PropertiesFileLoader;
 import com.djwebpros.commons.Utility;
 import com.djwebpros.models.User;
 import com.djwebpros.responses.HandshakeResponseModel;
-import com.djwebpros.responses.JWLTMethodReturn;
+import com.djwebpros.responses.JWTMethodReturn;
 import com.djwebpros.responses.UserResponseModel;
 import com.djwebpros.service.UserService;
 
@@ -48,8 +48,8 @@ public class HandShakeController {
 	public @ResponseBody HandshakeResponseModel handShakeInitializer(@RequestBody String postPayload, @RequestHeader HttpHeaders headers){
 		JSONObject postJSONData = new JSONObject(postPayload);
 		HandshakeResponseModel handshakeResponse = new HandshakeResponseModel();
-		if(utility.validateRequest(postJSONData, headers).isError()){
-			JWLTMethodReturn token = jwtokenCreator.createJWT(null);
+		if(utility.validateRequest(postJSONData, headers).isTokenValid()){
+			JWTMethodReturn token = jwtokenCreator.createJWT(null);
 			handshakeResponse.setError(false);
 			handshakeResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
 			handshakeResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);

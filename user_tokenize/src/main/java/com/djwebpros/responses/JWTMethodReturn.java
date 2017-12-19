@@ -1,6 +1,6 @@
 package com.djwebpros.responses;
 
-public class JWLTMethodReturn extends ResponseModel {
+public class JWTMethodReturn extends ResponseModel {
 	
 	private String token;
 

@@ -2,11 +2,11 @@ package com.djwebpros.JWT;
 
 import com.djwebpros.models.Token;
 import com.djwebpros.models.User;
-import com.djwebpros.responses.JWLTMethodReturn;
+import com.djwebpros.responses.JWTMethodReturn;
 
 public interface JWTokenCreator {
 
-	public JWLTMethodReturn createJWT(User user);
-	public JWLTMethodReturn createJWT(User user, Token token);
+	public JWTMethodReturn createJWT(User user);
+	public JWTMethodReturn createJWT(User user, Token token);
 	
 }

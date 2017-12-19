@@ -16,7 +16,7 @@ import com.djwebpros.commons.PropertiesFileLoader;
 import com.djwebpros.commons.Utility;
 import com.djwebpros.models.Token;
 import com.djwebpros.models.User;
-import com.djwebpros.responses.JWLTMethodReturn;
+import com.djwebpros.responses.JWTMethodReturn;
 import com.djwebpros.service.TokenService;
 
 @Service
@@ -68,8 +68,8 @@ public class JWTCreator implements JWTokenCreator {
 		return token;
 	}
 
-	public JWLTMethodReturn createJWT(User user) {
-		JWLTMethodReturn returnObject = new JWLTMethodReturn();
+	public JWTMethodReturn createJWT(User user) {
+		JWTMethodReturn returnObject = new JWTMethodReturn();
 		String token = null;
 		try {
 			if (user != null) {
@@ -106,7 +106,7 @@ public class JWTCreator implements JWTokenCreator {
 		return returnObject;
 	}
 
-	public JWLTMethodReturn createJWT(User user, Token token) {
+	public JWTMethodReturn createJWT(User user, Token token) {
 		// TODO Auto-generated method stub
 		return null;
 	}

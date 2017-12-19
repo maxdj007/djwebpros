@@ -39,7 +39,7 @@ public class ValidateTokenController {
 	public @ResponseBody ValidatedTokenResponseModel signUp(@RequestBody String postPayload, @RequestHeader HttpHeaders headers){
 		JSONObject postJSONData = new JSONObject(postPayload);
 		ValidatedTokenResponseModel validatedTokenResponseModel = new ValidatedTokenResponseModel();
-		if(utility.validateRequest(postJSONData, headers).isError()){
+		if(utility.validateRequest(postJSONData, headers).isTokenValid()){
 			boolean isValid = jwTokenValidator.isTokenStillValid(postJSONData.getString(Constants.POST_DATA_FIELD_TOKEN));
 			validatedTokenResponseModel.setError(false);
 			validatedTokenResponseModel.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
