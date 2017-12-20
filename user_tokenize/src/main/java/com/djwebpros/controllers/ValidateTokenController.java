@@ -17,6 +17,11 @@ import com.djwebpros.commons.PropertiesFileLoader;
 import com.djwebpros.commons.Utility;
 import com.djwebpros.responses.ValidatedTokenResponseModel;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public class ValidateTokenController {
 	
 	/**
@@ -39,7 +44,7 @@ public class ValidateTokenController {
 	public @ResponseBody ValidatedTokenResponseModel signUp(@RequestBody String postPayload, @RequestHeader HttpHeaders headers){
 		JSONObject postJSONData = new JSONObject(postPayload);
 		ValidatedTokenResponseModel validatedTokenResponseModel = new ValidatedTokenResponseModel();
-		if(utility.validateRequest(postJSONData, headers).isTokenValid()){
+		if(utility.validateRequest(postJSONData, headers, Constants.REQUEST_TYPE_VALIDATE_TOKEN).isRequestValid()){
 			boolean isValid = jwTokenValidator.isTokenStillValid(postJSONData.getString(Constants.POST_DATA_FIELD_TOKEN));
 			validatedTokenResponseModel.setError(false);
 			validatedTokenResponseModel.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);

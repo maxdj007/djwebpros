@@ -1,5 +1,10 @@
 package com.djwebpros.responses;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public class JWTokenValidationModel extends ResponseModel {
 
 	private boolean tokenValid = false;

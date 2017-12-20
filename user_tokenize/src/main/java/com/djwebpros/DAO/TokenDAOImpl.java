@@ -9,7 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.djwebpros.models.Token;
 
-
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Repository
 public class TokenDAOImpl implements TokenDAO{
 

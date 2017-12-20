@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.djwebpros.models.UserType;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Repository
 public class UserTypeDAOImpl implements UserTypeDAO {
 

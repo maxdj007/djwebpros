@@ -19,6 +19,11 @@ import com.djwebpros.models.User;
 import com.djwebpros.responses.JWTMethodReturn;
 import com.djwebpros.service.TokenService;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Service
 public class JWTCreator implements JWTokenCreator {
 

@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.djwebpros.models.Token;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public interface TokenDAO {
 
 	public void addToken(Token Token);

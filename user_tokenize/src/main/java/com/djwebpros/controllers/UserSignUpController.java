@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.djwebpros.service.TokenService;
 import com.djwebpros.service.UserService;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Controller
 public class UserSignUpController {
 	

@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 
 import com.djwebpros.models.User;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Service
 public class JWTokenClaimAccessImpl implements JWTokenClaimAccess {
 

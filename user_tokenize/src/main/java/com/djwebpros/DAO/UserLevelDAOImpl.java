@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.djwebpros.models.UserLevel;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Repository
 public class UserLevelDAOImpl implements UserLevelDAO {
 

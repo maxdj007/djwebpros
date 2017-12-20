@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.djwebpros.DAO.UserLevelDAO;
 import com.djwebpros.models.UserLevel;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Service
 public class UserLevelServiceImpl implements UserLevelService {
 

@@ -1,5 +1,10 @@
 package com.djwebpros.JWT;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 import org.springframework.stereotype.Service;
 
 import com.djwebpros.responses.JWTokenValidationModel;

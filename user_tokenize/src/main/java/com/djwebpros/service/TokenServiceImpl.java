@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.djwebpros.DAO.TokenDAO;
 import com.djwebpros.models.Token;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Service
 public class TokenServiceImpl implements TokenService {
 	

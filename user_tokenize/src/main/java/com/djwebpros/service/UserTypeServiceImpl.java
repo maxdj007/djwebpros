@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.djwebpros.DAO.UserTypeDAO;
 import com.djwebpros.models.UserType;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 @Service
 public class UserTypeServiceImpl implements UserTypeService {
 

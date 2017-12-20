@@ -1,5 +1,10 @@
 package com.djwebpros.responses;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public class SignUpResponseModel extends ResponseModel {
 	
 	private String UserHash;

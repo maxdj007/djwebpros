@@ -21,6 +21,11 @@ public final class PropertiesFileLoader {
 	 * 
 	 */
 	private static Properties awsProperties = new Properties();
+	
+	/**
+	 * 
+	 */
+	private static Properties validationFlowProperties = new Properties();
 
 	/**
 	 * 
@@ -36,6 +41,7 @@ public final class PropertiesFileLoader {
 			webServiceProperties
 					.load(PropertiesFileLoader.class.getClassLoader().getResourceAsStream("database.properties"));
 			awsProperties.load(PropertiesFileLoader.class.getClassLoader().getResourceAsStream("Misc.properties"));
+			validationFlowProperties.load(PropertiesFileLoader.class.getClassLoader().getResourceAsStream("validationFlow.properties"));
 		} catch (IOException e) {
 			//logger.error("Error loading webservices service properties file");
 		}
@@ -65,6 +71,10 @@ public final class PropertiesFileLoader {
 	
 	public Properties getMiscProperties() {
 		return awsProperties;
+	}
+	
+	public Properties getValidationFlowProperties() {
+		return validationFlowProperties;
 	}
 
 }

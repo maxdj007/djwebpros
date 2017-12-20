@@ -1,5 +1,10 @@
 package com.djwebpros.responses;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public class HandshakeResponseModel extends ResponseModel {
 
 	private String token;

@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.djwebpros.models.UserLevel;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public interface UserLevelDAO {
 
 	public void addUserLevel(UserLevel UserLevel);

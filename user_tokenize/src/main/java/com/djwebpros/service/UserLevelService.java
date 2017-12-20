@@ -4,9 +4,14 @@ import java.util.List;
 
 import com.djwebpros.models.UserLevel;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public interface UserLevelService {
 
-public void addUserLevel(UserLevel UserLevel);
+	public void addUserLevel(UserLevel UserLevel);
 	
 	public void updateUserLevel(UserLevel UserLevel);
 	

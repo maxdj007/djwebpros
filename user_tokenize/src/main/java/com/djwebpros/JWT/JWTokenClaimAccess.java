@@ -4,6 +4,11 @@ import java.util.Date;
 
 import com.djwebpros.models.User;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public interface JWTokenClaimAccess {
 
 	public User getUserFromToken(String token);

@@ -4,6 +4,11 @@ import java.util.Date;
 
 import com.djwebpros.models.User;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public class LoginResponseModel extends ResponseModel {
 
 	private User user;

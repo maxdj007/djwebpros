@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.djwebpros.models.UserType;
 
+/**
+ * 
+ * @author DJ
+ *
+ */
 public interface UserTypeDAO {
 
 	public void addUserType(UserType UserType);
