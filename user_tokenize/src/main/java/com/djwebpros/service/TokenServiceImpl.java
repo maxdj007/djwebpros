@@ -24,26 +24,31 @@ public class TokenServiceImpl implements TokenService {
 		this.tokenDAO = tokenDAO;
 	}
 
+	@Override
 	@Transactional
 	public void addToken(Token token) {
 		tokenDAO.addToken(token);
 	}
 
+	@Override
 	@Transactional
 	public void updateToken(Token token) {
 		tokenDAO.updateToken(token);
 	}
 
+	@Override
 	@Transactional
 	public Token getTokenById(int id) {
 		return tokenDAO.getTokenById(id);
 	}
 
+	@Override
 	@Transactional
 	public void removeToken(int id) {
 		tokenDAO.removeToken(id);
 	}
 
+	@Override
 	@Transactional
 	public List<Token> listTokens() {
 		return this.tokenDAO.listTokens();

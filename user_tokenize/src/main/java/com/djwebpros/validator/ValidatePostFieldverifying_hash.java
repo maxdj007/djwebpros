@@ -2,6 +2,11 @@ package com.djwebpros.validator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+
+import com.djwebpros.commons.Constants;
+import com.djwebpros.commons.Utility;
 
 /**
  * 
@@ -10,6 +15,9 @@ import org.json.JSONObject;
  */
 public class ValidatePostFieldverifying_hash extends ValidatePostField {
 
+	@Autowired
+	private Utility utility;
+	
 	@Override
 	/**
 	 * @method : validation check.
@@ -20,8 +28,16 @@ public class ValidatePostFieldverifying_hash extends ValidatePostField {
 	 *            : object that will hold all the errors in a key value pair.
 	 */
 	public void validate(JSONObject errorJson, JSONObject postJSONData) throws JSONException {
-		// TODO Auto-generated method stub
+		if(postJSONData.get(Constants.POST_DATA_FIELD_USER_HASH) == null || StringUtils.isEmpty(postJSONData.get(Constants.POST_DATA_FIELD_USER_HASH))){
+			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_USER_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Null"));
+		} else if(!validateUserHash((String)postJSONData.get(Constants.POST_DATA_FIELD_USER_HASH))){
+			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_USER_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Invalid"));
+		}
 
+	}
+	
+	private boolean validateUserHash(String userHash){
+		return utility.UserHashVerifier(userHash);
 	}
 
 }

@@ -45,6 +45,11 @@ public class Utility {
 		return null;
 	}
 	
+	public boolean UserHashVerifier(String userHash){
+		//TODO: user hashing algo
+		return true;
+	}
+	
 	public Date getTokenExpiration(Date date){
 		Date expirationDate = null;
 		date.getTime();

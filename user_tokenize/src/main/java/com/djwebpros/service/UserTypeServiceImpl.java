@@ -24,24 +24,33 @@ public class UserTypeServiceImpl implements UserTypeService {
 		this.userTypeDAO = userTypeDAO;
 	}
 	
+	@Override
 	@Transactional
 	public void addUserType(UserType UserType) {
 		this.userTypeDAO.addUserType(UserType);
 	}
 
+	@Override
+	@Transactional
 	public void updateUserType(UserType UserType) {
 		this.userTypeDAO.updateUserType(UserType);
 		
 	}
 
+	@Override
+	@Transactional
 	public UserType getUserTypeById(int id) {
 		return this.getUserTypeById(id);
 	}
 
+	@Override
+	@Transactional
 	public void removeUserType(int id) {
 		this.removeUserType(id);
 	}
 
+	@Override
+	@Transactional
 	public List<UserType> listUserTypes() {
 		return this.listUserTypes();
 	}

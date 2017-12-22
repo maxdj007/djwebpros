@@ -1,7 +1,11 @@
 package com.djwebpros.validator;
 
+import java.util.Properties;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.djwebpros.commons.PropertiesFileLoader;
 
 /**
  * This class is used to validate all required validations.
@@ -9,6 +13,16 @@ import org.json.JSONObject;
  * @author DJ
  */
 public final class ValidationFactory {
+	
+	/**
+	 * Properties file loader
+	 */
+	protected PropertiesFileLoader propertiesLoader = PropertiesFileLoader.getInstance();
+
+	/**
+	 * Property
+	 */
+	protected Properties property = propertiesLoader.getMiscProperties();
 	/**
 	 *
 	 */
@@ -124,6 +138,10 @@ public final class ValidationFactory {
 				| SecurityException e) {
 
 		}
+	}
+	
+	public Properties getPropertiesInstance(){
+		return property;
 	}
 
 	/**

@@ -24,27 +24,32 @@ public class UserLevelServiceImpl implements UserLevelService {
 		this.userlevelDAO = userlevelDAO;
 	}
 	
+	@Override
 	@Transactional
 	public void addUserLevel(UserLevel UserLevel) {
 		this.userlevelDAO.addUserLevel(UserLevel);
 	}
 
+	@Override
 	@Transactional
 	public void updateUserLevel(UserLevel UserLevel) {
 		this.userlevelDAO.updateUserLevel(UserLevel);
 		
 	}
 
+	@Override
 	@Transactional
 	public UserLevel getUserLevelById(int id) {
 		return this.userlevelDAO.getUserLevelById(id);
 	}
 
+	@Override
 	@Transactional
 	public void removeUserLevel(int id) {
 		this.removeUserLevel(id);
 	}
 
+	@Override
 	@Transactional
 	public List<UserLevel> listUserLevels() {
 		return this.listUserLevels();

@@ -1,5 +1,7 @@
 package com.djwebpros.validator;
 
+import java.util.Properties;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,7 +21,14 @@ public class LogOutRequestValidator extends RequestValidator {
 	 *            : object that will hold all the errors in a key value pair.
 	 */
 	public void validate(JSONObject errorJson, JSONObject postJSONData) throws JSONException {
-		// TODO Auto-generated method stub
+    	Properties property = ValidationFactory.getInstance().getPropertiesInstance();
+    	String mandatoryValidationFlow = property.getProperty("validationFlow.Mandatory");
+		String[] validatorClasses= mandatoryValidationFlow.split(",");
+		ValidationFactory.getInstance().performMandatoryParamValidation(errorJson, validatorClasses, postJSONData);
+		
+		String validationFlow = property.getProperty("validationFlow.LogOut");
+		validatorClasses = validationFlow.split(",");
+		ValidationFactory.getInstance().performRequestSpecificParamValidation(errorJson, validatorClasses, postJSONData);
 
 	}
 

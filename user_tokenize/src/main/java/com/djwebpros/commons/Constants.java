@@ -56,6 +56,7 @@ public class Constants {
 	public static final String REQUEST_TYPE_HANDSHAKE = "Handshake";
 	public static final String REQUEST_TYPE_RE_HANDSHAKE = "ReHandshake";
 		
+	
 	//public static final String USER_LEVEL_ = "EXTRA";
 	
 }
