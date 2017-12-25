@@ -16,6 +16,7 @@ public class Constants {
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE = "REQUEST_AUTHENTICATION_FAILED";
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE = "REQUEST_VALIDATION_FAILED";
 	
+	public static final String EXCEPTION_OCCURED_DURING_METHOD_CALL = "exception_occured";
 	public static final String POST_DATA_FIELD_APPLICATION = "application";
 	public static final String POST_DATA_FIELD_APPLICATION_ID = "application_id";
 	public static final String POST_DATA_FIELD_VERIFYING_HASH = "verifying_hash";

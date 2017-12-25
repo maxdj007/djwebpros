@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.djwebpros.commons.Constants;
 import com.djwebpros.commons.PropertiesFileLoader;
 import com.djwebpros.commons.Utility;
+import com.djwebpros.controllers.HandShakeController;
 import com.djwebpros.models.Token;
 import com.djwebpros.models.User;
 import com.djwebpros.responses.JWTMethodReturn;
@@ -26,6 +28,8 @@ import com.djwebpros.service.TokenService;
  */
 @Service
 public class JWTCreator implements JWTokenCreator {
+	
+	private Logger logger = Logger.getLogger(HandShakeController.class);
 
 	/**
 	 * Properties file loader
@@ -74,10 +78,12 @@ public class JWTCreator implements JWTokenCreator {
 	}
 
 	public JWTMethodReturn createJWT(User user) {
+		logger.info("Starting to create token as required");
 		JWTMethodReturn returnObject = new JWTMethodReturn();
 		String token = null;
 		try {
 			if (user != null) {
+				logger.info("creating token with user");
 				token = this.createToken(user);
 				System.out.println(token);
 				Token newToken = new Token();
@@ -86,7 +92,12 @@ public class JWTCreator implements JWTokenCreator {
 				newToken.setUser_hash(user.getUserHash());
 				newToken.setValid(true);
 				tokenService.addToken(newToken);
+				returnObject.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
+				returnObject.setError(false);
+				returnObject.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
+				returnObject.setToken(token);
 			} else {
+				logger.info("creating token with user null i.e the handshake token");
 				token = this.createToken();
 				System.out.println(token);
 				Token newToken = new Token();
@@ -95,17 +106,31 @@ public class JWTCreator implements JWTokenCreator {
 				newToken.setUser_hash(null);
 				newToken.setValid(true);
 				tokenService.addToken(newToken);
+				returnObject.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
+				returnObject.setError(false);
+				returnObject.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
+				returnObject.setToken(token);
 			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("UnsupportedEncodingException exception occured : with message: "+e.getMessage());
+			returnObject.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_ERROR);
+			returnObject.setError(true);
+			returnObject.setMessage(e.getMessage());
 		} catch (JWTCreationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("JWTCreationException exception occured : with message: "+e.getMessage());
+			returnObject.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_ERROR);
+			returnObject.setError(true);
+			returnObject.setMessage(e.getMessage());
 		} catch (RuntimeException rException) {
-			// TODO: handle exception
+			logger.error("RuntimeException exception occured : with message: "+rException.getMessage());
+			returnObject.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_ERROR);
+			returnObject.setError(true);
+			returnObject.setMessage(rException.getMessage());
 		} catch (Exception exception){
-			//TODO: logg it
+			logger.error("exception occured : with message: "+exception.getMessage());
+			returnObject.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_ERROR);
+			returnObject.setError(true);
+			returnObject.setMessage(exception.getMessage());
 		}
 		
 		return returnObject;

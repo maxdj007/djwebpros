@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import com.djwebpros.validator.ValidationFactory;
 @Component
 public class Utility {
 	
+	private Logger logger = Logger.getLogger(Utility.class);
 	/**
 	 * Properties file loader
 	 */
@@ -51,6 +53,7 @@ public class Utility {
 	}
 	
 	public Date getTokenExpiration(Date date){
+		logger.info("Returning token expiration time");
 		Date expirationDate = null;
 		date.getTime();
 		expirationDate = new Date(date.getTime()+Long.parseLong(property.getProperty("Token.Expiration_Time_In_Miliseconds")));
@@ -59,39 +62,55 @@ public class Utility {
 	
 	@SuppressWarnings("unchecked")
 	public RequestValidationModel validateRequest(JSONObject postData, HttpHeaders httpHeaders, String requestType){
+		logger.info("Starting the request validations and performing header validation before passing to factory");
 		RequestValidationModel validationResponse = new RequestValidationModel();
 		validationResponse.setError(false);
-		if(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN) == null){
-			validationResponse.setError(true);
-			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
-			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Null.Token"));
-			return validationResponse;
-		}
-		if(!jwtokenValidator.verifyJWT(postData.getString(Constants.POST_DATA_FIELD_TOKEN)).isTokenValid()){
-			validationResponse.setError(true);
-			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
-			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Invalid.Token"));
-			return validationResponse;
-		}
-		if(!jwtokenValidator.isTokenStillValid(postData.getString(Constants.POST_DATA_FIELD_TOKEN))){
-			validationResponse.setError(true);
-			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
-			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Expired.Token"));
-			return validationResponse;
+		if(!Constants.REQUEST_TYPE_HANDSHAKE.equals(requestType)){
+			if(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN) == null){
+				logger.debug("no token found in request");
+				validationResponse.setError(true);
+				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Null.Token"));
+				return validationResponse;
+			}
+			if(!jwtokenValidator.verifyJWT(postData.getString(Constants.POST_DATA_FIELD_TOKEN)).isTokenValid()){
+				logger.debug("invalid token found in request");
+				validationResponse.setError(true);
+				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Invalid.Token"));
+				return validationResponse;
+			}
+			if(!jwtokenValidator.isTokenStillValid(postData.getString(Constants.POST_DATA_FIELD_TOKEN))){
+				logger.debug("expired token found in request");
+				validationResponse.setError(true);
+				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Expired.Token"));
+				return validationResponse;
+			}
 		}
 		JSONObject errorJson = new JSONObject();
+		logger.debug("Calling Validation Factory");
 		ValidationFactory.getInstance().performRequestValidation(errorJson, requestType, postData);
 		if(errorJson.length() == 0){
+			logger.debug("No errors found in the request");
 			validationResponse.setError(false);
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
 			validationResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
 			validationResponse.setRequestValid(true);
 			validationResponse.setErrorsInRequest(null);
+		} else if(errorJson.get(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL) != null){
+			logger.debug("Exception occcured during the validation :"+errorJson.get(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL));
+			validationResponse.setErrorsInRequest(validationResponse.getErrorsInRequest()+" + "+errorJson.getString(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL));
+			validationResponse.setError(true);
+			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
+			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Exception.Message"));
+			validationResponse.setRequestValid(true);
 		} else {
 			Set<String> newOne = errorJson.keySet();
 			for(String key : newOne){
 				validationResponse.setErrorsInRequest(validationResponse.getErrorsInRequest()+" + "+errorJson.getString(key));
 			}
+			logger.debug("Errors found in the request :"+validationResponse.getErrorsInRequest());
 			validationResponse.setError(true);
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
 			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Standard.Message"));

@@ -2,6 +2,7 @@ package com.djwebpros.controllers;
 
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +31,8 @@ import com.djwebpros.service.UserService;
 @Controller
 public class HandShakeController {
 	
+	private Logger logger = Logger.getLogger(HandShakeController.class);
+	
 	/**
 	 * Properties file loader
 	 */
@@ -51,10 +54,13 @@ public class HandShakeController {
 	
 	@RequestMapping(value = "/hello", method = RequestMethod.POST, consumes = "text/plain")
 	public @ResponseBody HandshakeResponseModel handShakeInitializer(@RequestBody String postPayload, @RequestHeader HttpHeaders headers){
+		logger.info("Handshake inititalised");
 		JSONObject postJSONData = new JSONObject(postPayload);
 		HandshakeResponseModel handshakeResponse = new HandshakeResponseModel();
 		if(utility.validateRequest(postJSONData, headers, Constants.REQUEST_TYPE_HANDSHAKE).isRequestValid()){
+			logger.debug("Request validating creating token");
 			JWTMethodReturn token = jwtokenCreator.createJWT(null);
+			logger.debug("Setting response");
 			handshakeResponse.setError(false);
 			handshakeResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
 			handshakeResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
@@ -64,6 +70,7 @@ public class HandShakeController {
 			handshakeResponse.setMessage(property.getProperty("Request.Validation.Error"));
 			handshakeResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
 		}
+		logger.info("Returning response");
 		return  handshakeResponse;
 	}
 	
@@ -77,9 +84,5 @@ public class HandShakeController {
 		newResponse.setMessage("This is a test message");
 		newResponse.setUser(user);
 		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
-	}
-	
-
-	
-	
+	}	
 }

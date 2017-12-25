@@ -2,6 +2,7 @@ package com.djwebpros.validator;
 
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +15,7 @@ import com.djwebpros.commons.PropertiesFileLoader;
  */
 public final class ValidationFactory {
 	
+	private Logger logger = Logger.getLogger(ValidationFactory.class);
 	/**
 	 * Properties file loader
 	 */
@@ -60,21 +62,21 @@ public final class ValidationFactory {
 	 */
 	public void performRequestValidation(final JSONObject errorJson,
 			String validatorClass, JSONObject postJSONData) {
+		logger.info("Starting the request validations");
 		try {
+				logger.info(validatorClass+" request validation initiated");
 				validatorClass = validatorClass+"RequestValidator";
 				Class<?> valClass = Class.forName(validatorClass);
 				RequestValidator validator = (RequestValidator) valClass.newInstance();
 				validator.validate(errorJson, postJSONData);
 
 		} catch (NullPointerException e) {
-			
-
+			logger.error("NullPointerException exception occured : with message :"+e.getMessage());
 		} catch (JSONException e) {
-			
-
+			logger.error("JSONException exception occured : with message :"+e.getMessage());
 		} catch (LinkageError | ClassNotFoundException | IllegalAccessException | InstantiationException
 				| SecurityException e) {
-
+			logger.error("exception occured : with message :"+e.getMessage());
 		}
 	}
 	
@@ -89,6 +91,7 @@ public final class ValidationFactory {
 	 */
 	public void performMandatoryParamValidation(final JSONObject errorJson,
 			String[] validatorClasses, JSONObject postJSONData) {
+		logger.info("Starting the Mandatory Param validations");
 		try {
 				for(String validatorClass : validatorClasses){
 					validatorClass = "ValidatePostField"+validatorClass;
@@ -98,14 +101,12 @@ public final class ValidationFactory {
 				}
 
 		} catch (NullPointerException e) {
-			
-
+			logger.error("NullPointerException exception occured : with message :"+e.getMessage());
 		} catch (JSONException e) {
-			
-
+			logger.error("JSONException exception occured : with message :"+e.getMessage());
 		} catch (LinkageError | ClassNotFoundException | IllegalAccessException | InstantiationException
 				| SecurityException e) {
-
+			logger.error("exception occured : with message :"+e.getMessage());
 		}
 	}
 	
@@ -120,6 +121,7 @@ public final class ValidationFactory {
 	 */
 	public void performRequestSpecificParamValidation(final JSONObject errorJson,
 			String[] validatorClasses, JSONObject postJSONData) {
+		logger.info("Starting the request specific param validations");
 		try {
 				for(String validatorClass: validatorClasses){
 					validatorClass = "ValidatePostField"+validatorClass;
@@ -129,14 +131,12 @@ public final class ValidationFactory {
 				}
 
 		} catch (NullPointerException e) {
-			
-
+			logger.error("NullPointerException exception occured : with message :"+e.getMessage());
 		} catch (JSONException e) {
-			
-
+			logger.error("JSONException exception occured : with message :"+e.getMessage());
 		} catch (LinkageError | ClassNotFoundException | IllegalAccessException | InstantiationException
 				| SecurityException e) {
-
+			logger.error("exception occured : with message :"+e.getMessage());
 		}
 	}
 	
