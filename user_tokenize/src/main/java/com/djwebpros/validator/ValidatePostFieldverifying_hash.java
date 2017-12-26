@@ -28,10 +28,10 @@ public class ValidatePostFieldverifying_hash extends ValidatePostField {
 	 *            : object that will hold all the errors in a key value pair.
 	 */
 	public void validate(JSONObject errorJson, JSONObject postJSONData) throws JSONException {
-		if(postJSONData.get(Constants.POST_DATA_FIELD_USER_HASH) == null || StringUtils.isEmpty(postJSONData.get(Constants.POST_DATA_FIELD_USER_HASH))){
-			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_USER_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Null"));
-		} else if(!validateUserHash((String)postJSONData.get(Constants.POST_DATA_FIELD_USER_HASH))){
-			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_USER_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Invalid"));
+		if(postJSONData.get(Constants.POST_DATA_FIELD_VERIFYING_HASH) == null || StringUtils.isEmpty(postJSONData.get(Constants.POST_DATA_FIELD_VERIFYING_HASH))){
+			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_VERIFYING_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Null"));
+		} else if(!validateUserHash((String)postJSONData.get(Constants.POST_DATA_FIELD_VERIFYING_HASH))){
+			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_VERIFYING_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Invalid"));
 		}
 
 	}

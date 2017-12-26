@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.djwebpros.commons.Constants;
 import com.djwebpros.commons.PropertiesFileLoader;
 
 /**
@@ -24,7 +25,14 @@ public final class ValidationFactory {
 	/**
 	 * Property
 	 */
-	protected Properties property = propertiesLoader.getMiscProperties();
+	protected Properties miscProperty = propertiesLoader.getMiscProperties();
+	
+	/**
+	 * Property
+	 */
+	protected Properties validtionFlowProperty = propertiesLoader.getValidationFlowProperties();
+	
+	
 	/**
 	 *
 	 */
@@ -65,7 +73,7 @@ public final class ValidationFactory {
 		logger.info("Starting the request validations");
 		try {
 				logger.info(validatorClass+" request validation initiated");
-				validatorClass = validatorClass+"RequestValidator";
+				validatorClass = Constants.VALIDATION_PACKAGE_ABSOLUTE_NAME+validatorClass+"RequestValidator";
 				Class<?> valClass = Class.forName(validatorClass);
 				RequestValidator validator = (RequestValidator) valClass.newInstance();
 				validator.validate(errorJson, postJSONData);
@@ -94,7 +102,7 @@ public final class ValidationFactory {
 		logger.info("Starting the Mandatory Param validations");
 		try {
 				for(String validatorClass : validatorClasses){
-					validatorClass = "ValidatePostField"+validatorClass;
+					validatorClass = Constants.VALIDATION_PACKAGE_ABSOLUTE_NAME+"ValidatePostField"+validatorClass;
 					Class<?> valClass = Class.forName(validatorClass);
 					ValidatePostField validator = (ValidatePostField) valClass.newInstance();
 					validator.validate(errorJson, postJSONData);
@@ -124,7 +132,7 @@ public final class ValidationFactory {
 		logger.info("Starting the request specific param validations");
 		try {
 				for(String validatorClass: validatorClasses){
-					validatorClass = "ValidatePostField"+validatorClass;
+					validatorClass = Constants.VALIDATION_PACKAGE_ABSOLUTE_NAME+"ValidatePostField"+validatorClass;
 					Class<?> valClass = Class.forName(validatorClass);
 					ValidatePostField validator = (ValidatePostField) valClass.newInstance();
 					validator.validate(errorJson, postJSONData);
@@ -141,7 +149,7 @@ public final class ValidationFactory {
 	}
 	
 	public Properties getPropertiesInstance(){
-		return property;
+		return miscProperty;
 	}
 
 	/**

@@ -5,6 +5,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -65,12 +66,14 @@ public class Utility {
 		logger.info("Starting the request validations and performing header validation before passing to factory");
 		RequestValidationModel validationResponse = new RequestValidationModel();
 		validationResponse.setError(false);
+		try{
 		if(!Constants.REQUEST_TYPE_HANDSHAKE.equals(requestType)){
 			if(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN) == null){
 				logger.debug("no token found in request");
 				validationResponse.setError(true);
 				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
 				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Null.Token"));
+				validationResponse.setRequestValid(false);
 				return validationResponse;
 			}
 			if(!jwtokenValidator.verifyJWT(postData.getString(Constants.POST_DATA_FIELD_TOKEN)).isTokenValid()){
@@ -78,13 +81,15 @@ public class Utility {
 				validationResponse.setError(true);
 				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
 				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Invalid.Token"));
+				validationResponse.setRequestValid(false);
 				return validationResponse;
 			}
-			if(!jwtokenValidator.isTokenStillValid(postData.getString(Constants.POST_DATA_FIELD_TOKEN))){
+			if(!jwtokenValidator.isTokenStillValid(postData.getString(Constants.POST_DATA_FIELD_TOKEN)) && !Constants.REQUEST_TYPE_RE_HANDSHAKE.equals(requestType)){
 				logger.debug("expired token found in request");
 				validationResponse.setError(true);
 				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
 				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Expired.Token"));
+				validationResponse.setRequestValid(false);
 				return validationResponse;
 			}
 		}
@@ -98,13 +103,13 @@ public class Utility {
 			validationResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
 			validationResponse.setRequestValid(true);
 			validationResponse.setErrorsInRequest(null);
-		} else if(errorJson.get(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL) != null){
+		} else if(errorJson.keySet().contains(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL) && errorJson.get(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL) != null){
 			logger.debug("Exception occcured during the validation :"+errorJson.get(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL));
 			validationResponse.setErrorsInRequest(validationResponse.getErrorsInRequest()+" + "+errorJson.getString(Constants.EXCEPTION_OCCURED_DURING_METHOD_CALL));
 			validationResponse.setError(true);
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
 			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Exception.Message"));
-			validationResponse.setRequestValid(true);
+			validationResponse.setRequestValid(false);
 		} else {
 			Set<String> newOne = errorJson.keySet();
 			for(String key : newOne){
@@ -114,8 +119,16 @@ public class Utility {
 			validationResponse.setError(true);
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
 			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Standard.Message"));
-			validationResponse.setRequestValid(true);
+			validationResponse.setRequestValid(false);
 			
+		}
+		} catch (JSONException jsonEception){
+			logger.debug("Errors found in the request :"+validationResponse.getErrorsInRequest());
+			validationResponse.setError(true);
+			validationResponse.setErrorsInRequest(jsonEception.getMessage());
+			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
+			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Standard.Message"));
+			validationResponse.setRequestValid(false);
 		}
 		return validationResponse;
 	}

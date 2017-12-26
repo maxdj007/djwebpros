@@ -8,6 +8,15 @@ package com.djwebpros.responses;
 public class SignUpResponseModel extends ResponseModel {
 	
 	private String UserHash;
+	private String token;
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public String getUserHash() {
 		return UserHash;

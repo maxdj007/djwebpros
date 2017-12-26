@@ -1,9 +1,8 @@
 package com.djwebpros.validator;
 
-import java.util.Properties;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.util.StringUtils;
 
 /**
  * class to validate LogOut Request.
@@ -21,14 +20,21 @@ public class LogOutRequestValidator extends RequestValidator {
 	 *            : object that will hold all the errors in a key value pair.
 	 */
 	public void validate(JSONObject errorJson, JSONObject postJSONData) throws JSONException {
-    	Properties property = ValidationFactory.getInstance().getPropertiesInstance();
-    	String mandatoryValidationFlow = property.getProperty("validationFlow.Mandatory");
-		String[] validatorClasses= mandatoryValidationFlow.split(",");
-		ValidationFactory.getInstance().performMandatoryParamValidation(errorJson, validatorClasses, postJSONData);
 		
-		String validationFlow = property.getProperty("validationFlow.LogOut");
-		validatorClasses = validationFlow.split(",");
-		ValidationFactory.getInstance().performRequestSpecificParamValidation(errorJson, validatorClasses, postJSONData);
+    	String[] validatorClasses = null;
+    	String mandatoryValidationFlow = validtionFlowProperty.getProperty("validationFlow.Mandatory");
+    	if(mandatoryValidationFlow != null && !StringUtils.isEmpty(mandatoryValidationFlow)){
+			validatorClasses= mandatoryValidationFlow.split(",");
+			if(validatorClasses.length > 0)
+			ValidationFactory.getInstance().performMandatoryParamValidation(errorJson, validatorClasses, postJSONData);
+    	}
+		
+		String validationFlow = validtionFlowProperty.getProperty("validationFlow.LogOut");
+		if(validationFlow != null && !StringUtils.isEmpty(validationFlow)){
+			validatorClasses = validationFlow.split(",");
+			if(validatorClasses.length > 0)
+			ValidationFactory.getInstance().performRequestSpecificParamValidation(errorJson, validatorClasses, postJSONData);
+		}
 
 	}
 

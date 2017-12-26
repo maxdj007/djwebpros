@@ -1,9 +1,8 @@
 package com.djwebpros.validator;
 
-import java.util.Properties;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.util.StringUtils;
 
 /**
  * class to validate SignUp Request.
@@ -22,16 +21,15 @@ public class SignUpRequestValidator extends RequestValidator {
 	 */
 	public void validate(JSONObject errorJson, JSONObject postJSONData) throws JSONException {
 		String[] validatorClasses = null;
-		Properties property = ValidationFactory.getInstance().getPropertiesInstance();
-    	String mandatoryValidationFlow = property.getProperty("validationFlow.Mandatory");
-		if(mandatoryValidationFlow != null){
+    	String mandatoryValidationFlow = validtionFlowProperty.getProperty("validationFlow.Mandatory");
+		if(mandatoryValidationFlow != null && !StringUtils.isEmpty(mandatoryValidationFlow)){
 	    	validatorClasses = mandatoryValidationFlow.split(",");
 	    	if(validatorClasses.length > 0)
 			ValidationFactory.getInstance().performMandatoryParamValidation(errorJson, validatorClasses, postJSONData);
 		}
 		
-		String validationFlow = property.getProperty("validationFlow.SignUp");
-		if(validationFlow != null){
+		String validationFlow = validtionFlowProperty.getProperty("validationFlow.SignUp");
+		if(validationFlow != null && !StringUtils.isEmpty(validationFlow)){
 			validatorClasses = validationFlow.split(",");
 			if(validatorClasses.length > 0)
 			ValidationFactory.getInstance().performRequestSpecificParamValidation(errorJson, validatorClasses, postJSONData);

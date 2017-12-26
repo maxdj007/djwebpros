@@ -60,11 +60,18 @@ public class HandShakeController {
 		if(utility.validateRequest(postJSONData, headers, Constants.REQUEST_TYPE_HANDSHAKE).isRequestValid()){
 			logger.debug("Request validating creating token");
 			JWTMethodReturn token = jwtokenCreator.createJWT(null);
-			logger.debug("Setting response");
-			handshakeResponse.setError(false);
-			handshakeResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
-			handshakeResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
-			handshakeResponse.setToken(token.getToken());
+			if(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS.equals(token.getStatus())){
+				logger.debug("Setting response");
+				handshakeResponse.setError(false);
+				handshakeResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
+				handshakeResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
+				handshakeResponse.setToken(token.getToken());
+			} else {
+				logger.debug("Exception occured while generatin token : "+token.getMessage());
+				handshakeResponse.setError(true);
+				handshakeResponse.setMessage(property.getProperty("Token.Generation.Handshake.Error.Message"));
+				handshakeResponse.setStatus(Constants.TOKEN_GENERATION_RETURNED_EXCEPTION);
+			}
 		} else {
 			handshakeResponse.setError(true);
 			handshakeResponse.setMessage(property.getProperty("Request.Validation.Error"));
