@@ -73,6 +73,7 @@ public class HandShakeController {
 				handshakeResponse.setStatus(Constants.TOKEN_GENERATION_RETURNED_EXCEPTION);
 			}
 		} else {
+			logger.debug("Errors found in the request - ");
 			handshakeResponse.setError(true);
 			handshakeResponse.setMessage(property.getProperty("Request.Validation.Error"));
 			handshakeResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);

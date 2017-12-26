@@ -110,6 +110,7 @@ public class Utility {
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
 			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Exception.Message"));
 			validationResponse.setRequestValid(false);
+			logger.debug("Errors in request : "+validationResponse.getErrorsInRequest());
 		} else {
 			Set<String> newOne = errorJson.keySet();
 			for(String key : newOne){
@@ -120,10 +121,10 @@ public class Utility {
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
 			validationResponse.setMessage(property.getProperty("Request.Validation.Error.Standard.Message"));
 			validationResponse.setRequestValid(false);
-			
+			logger.debug("Errors in request : "+validationResponse.getErrorsInRequest());
 		}
 		} catch (JSONException jsonEception){
-			logger.debug("Errors found in the request :"+validationResponse.getErrorsInRequest());
+			logger.error("Errors found in the request :"+validationResponse.getErrorsInRequest());
 			validationResponse.setError(true);
 			validationResponse.setErrorsInRequest(jsonEception.getMessage());
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);
