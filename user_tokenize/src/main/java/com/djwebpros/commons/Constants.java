@@ -17,6 +17,7 @@ public class Constants {
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE = "REQUEST_VALIDATION_FAILED";
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_HIBERNATE_EXCEPTION = "HIBERNATE_EXCEPTION";
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_EXCEPTION = "OTHER_EXCEPTION";
+	public static final String METHOD_CALL_RETURN_STATUS_LOGIN_FAILURE_NO_USER = "USER_NOT_FOUND";
 	
 	public static final String TOKEN_GENERATION_RETURNED_EXCEPTION = "TOKEN_GENERATION_EXCEPTION";
 	
@@ -62,6 +63,10 @@ public class Constants {
 	public static final String REQUEST_TYPE_RE_HANDSHAKE = "ReHandshake";
 	
 	public static final String VALIDATION_PACKAGE_ABSOLUTE_NAME = "com.djwebpros.validator.";
+	
+	public static final String LOGIN_STATUS_LOGGED_IN = "LOGGED_IN";
+	public static final String LOGIN_STATUS_LOGGED_OUT = "LOGGED_OUT";
+	public static final String LOGIN_STATUS_LOCKED = "LOCKED";
 		
 	
 	//public static final String USER_LEVEL_ = "EXTRA";

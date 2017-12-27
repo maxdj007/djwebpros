@@ -1,6 +1,7 @@
 package com.djwebpros.JWT;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Properties;
 
@@ -89,6 +90,7 @@ public class JWTCreator implements JWTokenCreator {
 				Token newToken = new Token();
 				newToken.setLoggedIn(1);
 				newToken.setToken(token);
+				newToken.setAvailDate(new Timestamp(new Date().getTime()));
 				newToken.setUser_hash(user.getUserHash());
 				newToken.setValid(true);
 				tokenService.addToken(newToken);
@@ -103,6 +105,7 @@ public class JWTCreator implements JWTokenCreator {
 				Token newToken = new Token();
 				newToken.setLoggedIn(0);
 				newToken.setToken(token);
+				newToken.setAvailDate(new Timestamp(new Date().getTime()));
 				newToken.setUser_hash(null);
 				newToken.setValid(true);
 				tokenService.addToken(newToken);

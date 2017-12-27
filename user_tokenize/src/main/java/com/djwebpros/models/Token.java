@@ -1,7 +1,8 @@
 package com.djwebpros.models;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +40,7 @@ public class Token implements Serializable{
 	private int loggedIn;
 	
 	@Column(name="avail_date")
-	private Date availDate;
+	private Timestamp availDate;
 	
 	@Column(name="is_valid")
 	private boolean isValid;
@@ -58,6 +59,14 @@ public class Token implements Serializable{
 
 	public void setUser_hash(String user_hash) {
 		this.user_hash = user_hash;
+	}
+	
+	public Date getAvailDate() {
+		return availDate;
+	}
+
+	public void setAvailDate(Timestamp availDate) {
+		this.availDate = availDate;
 	}
 
 	public String getToken() {

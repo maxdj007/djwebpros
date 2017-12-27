@@ -1,14 +1,26 @@
 package com.djwebpros.controllers;
 
+import java.util.Properties;
+
+import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.djwebpros.service.TokenService;
+import com.djwebpros.JWT.JWTokenCreator;
+import com.djwebpros.commons.Constants;
+import com.djwebpros.commons.PropertiesFileLoader;
+import com.djwebpros.commons.Utility;
+import com.djwebpros.models.User;
+import com.djwebpros.responses.JWTMethodReturn;
+import com.djwebpros.responses.LoginResponseModel;
 import com.djwebpros.service.UserService;
 
 /**
@@ -19,18 +31,58 @@ import com.djwebpros.service.UserService;
 @Controller
 public class UserCheckController {
 	
+	private Logger logger = Logger.getLogger(UserSignUpController.class);
+	
+	/**
+	 * Properties file loader
+	 */
+	protected PropertiesFileLoader propertiesLoader = PropertiesFileLoader.getInstance();
+
+	/**
+	 * Property
+	 */
+	protected Properties property = propertiesLoader.getMiscProperties();
+
+	
 	@Autowired
 	private UserService userService;
 	
 	@Autowired
-	private TokenService tokenService;
+	private JWTokenCreator jwtokenCreator;
+	
+	@Autowired 
+	private Utility utility;
 	
 	@RequestMapping(value = "/Login", method = RequestMethod.POST, consumes = "text/plain")
-	public @ResponseBody String loginController(@RequestBody String postPayload){
-		//TODO : Add the mechanism for login
-		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
+	public @ResponseBody LoginResponseModel loginController(@RequestBody String postPayload, @RequestHeader HttpHeaders headers){
+		logger.info("Login inititalised");
+		JSONObject postJSONData = new JSONObject(postPayload);
+		LoginResponseModel loginResponse = new LoginResponseModel();
+		if(utility.validateRequest(postJSONData, headers, Constants.REQUEST_TYPE_LOGIN).isRequestValid()){
+			logger.debug("Request validating creating token");
+			try{
+				User user = new User();
+				user.setEmailId(postJSONData.getString(Constants.POST_DATA_FIELD_EMAIL_ID));
+				user.setPassHash(postJSONData.getString(Constants.POST_DATA_FIELD_PASS_HASH));
+				loginResponse = loginUser(user);
+				loginResponse = (Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS.equals(loginResponse.getStatus())) ? createToken(loginResponse.getUser(), loginResponse) : loginResponse ;
+				
+			} catch (JSONException e){
+				logger.error("Error occured while parsing form data. With Message : "+e.getMessage());
+				loginResponse.setError(true);
+				loginResponse.setMessage(property.getProperty("Json.Parse.Exception.User.Setting"));
+				loginResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_EXCEPTION);
+			} 
+		} else {
+			loginResponse.setError(true);
+			loginResponse.setMessage(property.getProperty("Request.Validation.Error"));
+			loginResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+		}
+		logger.info("Returning response");
+		return  loginResponse;
 	}
 	
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/isLoggedIn", method = RequestMethod.POST, consumes = "text/plain")
 	public @ResponseBody String isLoggedIn(@RequestBody String postPayload){
 		//TODO : Add the mechanism for login check
@@ -38,11 +90,52 @@ public class UserCheckController {
 		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
 	}
 	
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/Logout", method = RequestMethod.POST, consumes = "text/plain")
 	public @ResponseBody String logOutController(@RequestBody String postPayload){
 		//TODO : Add the mechanism for Logout
 		JSONObject postJSONData = new JSONObject(postPayload);
 		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
+	}
+	
+	private LoginResponseModel createToken(User user, LoginResponseModel loginResponse){
+		JWTMethodReturn token = jwtokenCreator.createJWT(user);
+		if(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS.equals(token.getStatus())){
+			logger.debug("Setting response");
+			loginResponse.setError(false);
+			loginResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
+			loginResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);
+			loginResponse.setToken(token.getToken());
+		} else {
+			logger.debug("Could not generate token : "+token.getMessage());
+			loginResponse.setError(true);
+			loginResponse.setUser(null);
+			loginResponse.setMessage(property.getProperty("Token.Generation.SignUporlogin.Error.Message"));
+			loginResponse.setStatus(Constants.TOKEN_GENERATION_RETURNED_EXCEPTION);
+		}
+		return loginResponse;
+	}
+	
+	private LoginResponseModel loginUser(User user){
+		LoginResponseModel loginResponse = new LoginResponseModel();
+		try{
+			loginResponse = userService.userLoginCheck(user);
+			if(!Constants.METHOD_CALL_RETURN_STATUS_LOGIN_FAILURE_NO_USER.equals(loginResponse.getStatus())){
+				loginResponse.getUser().setPassHash(null);
+				loginResponse.setLoginStatus(Constants.LOGIN_STATUS_LOGGED_IN);
+				return loginResponse;
+			} 
+			logger.debug("Could not log in......");
+			loginResponse.setError(true);
+			loginResponse.setMessage(property.getProperty("Login.Error.Not.Able.To.Login"));
+			loginResponse.setStatus(Constants.TOKEN_GENERATION_RETURNED_EXCEPTION);
+		} catch (RuntimeException runTimeException){
+			logger.error("Error Occured during adding to database. With Message : "+runTimeException.getMessage());
+			loginResponse.setError(true);
+			loginResponse.setMessage(property.getProperty("Database.RelatedIssue.Error.Message"));
+			loginResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_HIBERNATE_EXCEPTION);
+		}
+		return loginResponse;
 	}
 
 }

@@ -76,7 +76,7 @@ public class Utility {
 				validationResponse.setRequestValid(false);
 				return validationResponse;
 			}
-			if(!jwtokenValidator.verifyJWT(postData.getString(Constants.POST_DATA_FIELD_TOKEN)).isTokenValid()){
+			if(!jwtokenValidator.verifyJWT(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN)).isTokenValid()){
 				logger.debug("invalid token found in request");
 				validationResponse.setError(true);
 				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
@@ -84,7 +84,7 @@ public class Utility {
 				validationResponse.setRequestValid(false);
 				return validationResponse;
 			}
-			if(!jwtokenValidator.isTokenStillValid(postData.getString(Constants.POST_DATA_FIELD_TOKEN)) && !Constants.REQUEST_TYPE_RE_HANDSHAKE.equals(requestType)){
+			if(!jwtokenValidator.isTokenStillValid(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN)) && !Constants.REQUEST_TYPE_RE_HANDSHAKE.equals(requestType)){
 				logger.debug("expired token found in request");
 				validationResponse.setError(true);
 				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
@@ -124,7 +124,7 @@ public class Utility {
 			logger.debug("Errors in request : "+validationResponse.getErrorsInRequest());
 		}
 		} catch (JSONException jsonEception){
-			logger.error("Errors found in the request :"+validationResponse.getErrorsInRequest());
+			logger.error("Errors found in the request :"+jsonEception.getMessage());
 			validationResponse.setError(true);
 			validationResponse.setErrorsInRequest(jsonEception.getMessage());
 			validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_REQUEST_VALIDTION_FAILURE);

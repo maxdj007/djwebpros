@@ -3,6 +3,7 @@ package com.djwebpros.service;
 import java.util.List;
 
 import com.djwebpros.models.User;
+import com.djwebpros.responses.LoginResponseModel;
 
 /**
  * 
@@ -20,5 +21,7 @@ public interface UserService {
 	public void removeUser(int id);
 	
 	public List<User> listUsers();
+	
+	public LoginResponseModel userLoginCheck(User user);
 	
 }

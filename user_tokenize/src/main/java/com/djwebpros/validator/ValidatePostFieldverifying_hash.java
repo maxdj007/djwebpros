@@ -30,7 +30,7 @@ public class ValidatePostFieldverifying_hash extends ValidatePostField {
 	public void validate(JSONObject errorJson, JSONObject postJSONData) throws JSONException {
 		if(postJSONData.get(Constants.POST_DATA_FIELD_VERIFYING_HASH) == null || StringUtils.isEmpty(postJSONData.get(Constants.POST_DATA_FIELD_VERIFYING_HASH))){
 			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_VERIFYING_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Null"));
-		} else if(!validateUserHash((String)postJSONData.get(Constants.POST_DATA_FIELD_VERIFYING_HASH))){
+		} else if(!validateUserHash(postJSONData.getString(Constants.POST_DATA_FIELD_VERIFYING_HASH))){
 			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_VERIFYING_HASH, property.getProperty("Post.Field.Validation.Error.User.Hash.Invalid"));
 		}
 

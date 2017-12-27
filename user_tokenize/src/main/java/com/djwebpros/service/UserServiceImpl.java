@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.djwebpros.DAO.UserDAO;
 import com.djwebpros.models.User;
+import com.djwebpros.responses.LoginResponseModel;
 
 /**
  * 
@@ -52,6 +53,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public List<User> listUsers() {
 		return this.userDAO.listUsers();
+	}
+
+	@Override
+	@Transactional
+	public LoginResponseModel userLoginCheck(User user) {
+		return this.userDAO.userLoginCheck(user);
 	}
 
 }

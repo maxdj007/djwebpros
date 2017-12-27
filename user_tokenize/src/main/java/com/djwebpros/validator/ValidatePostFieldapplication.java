@@ -31,7 +31,7 @@ public class ValidatePostFieldapplication extends ValidatePostField {
 		List<String> applicationsList = new ArrayList<String>(Arrays.asList(applications.split(","))); 
 		if(postJSONData.get(Constants.POST_DATA_FIELD_APPLICATION) == null || StringUtils.isEmpty(postJSONData.get(Constants.POST_DATA_FIELD_APPLICATION))){
 			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_APPLICATION, property.getProperty("Post.Field.Validation.Error.Application.Null"));
-		} else if(applicationsList.contains(postJSONData.get(Constants.POST_DATA_FIELD_APPLICATION))){
+		} else if(!applicationsList.contains(postJSONData.get(Constants.POST_DATA_FIELD_APPLICATION))){
 			ValidationFactory.getInstance().setErrorMessage(errorJson, Constants.POST_DATA_FIELD_APPLICATION, property.getProperty("Post.Field.Validation.Error.Application.Invalid"));
 		}
 

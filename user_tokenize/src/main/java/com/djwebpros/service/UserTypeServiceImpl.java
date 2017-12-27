@@ -40,7 +40,7 @@ public class UserTypeServiceImpl implements UserTypeService {
 	@Override
 	@Transactional
 	public UserType getUserTypeById(int id) {
-		return this.getUserTypeById(id);
+		return this.userTypeDAO.getUserTypeById(id);
 	}
 
 	@Override

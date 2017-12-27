@@ -31,7 +31,7 @@ public class User implements Serializable {
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="user_hash", length = 100)
+	@Column(name="user_hash", length = 100, unique = true)
 	private String userHash;
 	
 	@Column(name="first_name", length = 60)
@@ -46,7 +46,7 @@ public class User implements Serializable {
 	@Column(name="nick_name", nullable = true, length = 60)
 	private String nickName;
 	
-	@Column(name="email_id", length = 100)
+	@Column(name="email_id", length = 100, unique = true)
 	private String emailId;
 	
 	@Column(name="pic", nullable = true, length = 200)
@@ -68,6 +68,17 @@ public class User implements Serializable {
 	
 	@Column(name="date_of_birth", nullable = true)
 	private Date dateOfBirth;
+	
+	@Column(name="logged_in", nullable = false)
+	private boolean isLoggedIn;
+
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	public void setLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
+	}
 
 	public int getId() {
 		return id;
