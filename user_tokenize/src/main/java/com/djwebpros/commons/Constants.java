@@ -8,6 +8,7 @@ package com.djwebpros.commons;
 public class Constants {
 
 	public static final String STANDARD_SUCCESS_MESSAGE = "The call was a success cheers!";
+	public static final String STANDARD_EXCEPTION_MESSAGE = "An Exception has occurred.";
 	
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS = "SUCCESS";
 	public static final String METHOD_CALL_RETURN_STATUS_VALUE_ERROR = "FAIL";
@@ -20,6 +21,8 @@ public class Constants {
 	public static final String METHOD_CALL_RETURN_STATUS_LOGIN_FAILURE_NO_USER = "USER_NOT_FOUND";
 	
 	public static final String TOKEN_GENERATION_RETURNED_EXCEPTION = "TOKEN_GENERATION_EXCEPTION";
+	public static final String TOKEN_INVALID = "TOKEN_INVALID";
+	public static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";
 	
 	public static final String EXCEPTION_OCCURED_DURING_METHOD_CALL = "exception_occured";
 	public static final String POST_DATA_FIELD_APPLICATION = "application";

@@ -20,6 +20,7 @@ import com.djwebpros.commons.PropertiesFileLoader;
 import com.djwebpros.commons.Utility;
 import com.djwebpros.models.User;
 import com.djwebpros.responses.JWTMethodReturn;
+import com.djwebpros.responses.LogOutResponseModel;
 import com.djwebpros.responses.LoginResponseModel;
 import com.djwebpros.service.UserService;
 
@@ -65,7 +66,7 @@ public class UserCheckController {
 				user.setEmailId(postJSONData.getString(Constants.POST_DATA_FIELD_EMAIL_ID));
 				user.setPassHash(postJSONData.getString(Constants.POST_DATA_FIELD_PASS_HASH));
 				loginResponse = loginUser(user);
-				loginResponse = (Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS.equals(loginResponse.getStatus())) ? createToken(loginResponse.getUser(), loginResponse) : loginResponse ;
+				loginResponse = (Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS.equals(loginResponse.getStatus())) ? createLoggedInToken(loginResponse.getUser(), loginResponse) : loginResponse ;
 				
 			} catch (JSONException e){
 				logger.error("Error occured while parsing form data. With Message : "+e.getMessage());
@@ -90,15 +91,32 @@ public class UserCheckController {
 		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
 	}
 	
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/Logout", method = RequestMethod.POST, consumes = "text/plain")
-	public @ResponseBody String logOutController(@RequestBody String postPayload){
-		//TODO : Add the mechanism for Logout
+	public @ResponseBody LogOutResponseModel logOutController(@RequestBody String postPayload, @RequestHeader HttpHeaders headers){
+		logger.info("logout inititalised");
 		JSONObject postJSONData = new JSONObject(postPayload);
-		return  "ksjhffhjklashflkasdhfkaskljfklafklashfkakf.asdfjklhasdklfasdklfhkl";
+		LogOutResponseModel logoutResponse = new LogOutResponseModel();
+		if(utility.validateRequest(postJSONData, headers, Constants.REQUEST_TYPE_LOGOUT).isRequestValid()){
+			try{
+				User user = new User();
+				user.setEmailId(postJSONData.getString(Constants.POST_DATA_FIELD_EMAIL_ID));
+				logoutResponse = logOutUser(user);				
+			} catch (JSONException e){
+				logger.error("Error occured while parsing form data. With Message : "+e.getMessage());
+				logoutResponse.setError(true);
+				logoutResponse.setMessage(property.getProperty("Json.Parse.Exception.User.Setting"));
+				logoutResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_EXCEPTION);
+			} 
+		} else {
+			logoutResponse.setError(true);
+			logoutResponse.setMessage(property.getProperty("Request.Validation.Error"));
+			logoutResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+		}
+		logger.info("Returning response");
+		return  logoutResponse;
 	}
 	
-	private LoginResponseModel createToken(User user, LoginResponseModel loginResponse){
+	private LoginResponseModel createLoggedInToken(User user, LoginResponseModel loginResponse){
 		JWTMethodReturn token = jwtokenCreator.createJWT(user);
 		if(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS.equals(token.getStatus())){
 			logger.debug("Setting response");
@@ -136,6 +154,35 @@ public class UserCheckController {
 			loginResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_HIBERNATE_EXCEPTION);
 		}
 		return loginResponse;
+	}
+	
+	private LogOutResponseModel logOutUser(User user){
+		LogOutResponseModel logOutResponse = new LogOutResponseModel();
+		try{
+			user = userService.getUserByEmailId(user);
+			user.setLoggedIn(false);
+			userService.updateUser(user);
+			JWTMethodReturn token = jwtokenCreator.createJWT(null);
+			if(!Constants.METHOD_CALL_RETURN_STATUS_VALUE_ERROR.equals(token.getStatus())){
+				logOutResponse.setError(false);
+				logOutResponse.setLogOutSuccessful(true);
+				logOutResponse.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
+				logOutResponse.setToken(token.getToken());
+				return logOutResponse;
+			} 
+			logger.debug("Could not create token");
+			logOutResponse.setError(true);
+			logOutResponse.setLogOutSuccessful(true);
+			logOutResponse.setMessage(property.getProperty("LogOut.Error.Not.Able.To.Create.Token"));
+			logOutResponse.setStatus(Constants.TOKEN_GENERATION_RETURNED_EXCEPTION);
+		} catch (RuntimeException runTimeException){
+			logger.error("Error Occured during adding to database. With Message : "+runTimeException.getMessage());
+			logOutResponse.setError(true);
+			logOutResponse.setLogOutSuccessful(false);
+			logOutResponse.setMessage(property.getProperty("Database.RelatedIssue.Error.Message"));
+			logOutResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_HIBERNATE_EXCEPTION);
+		}
+		return logOutResponse;
 	}
 
 }

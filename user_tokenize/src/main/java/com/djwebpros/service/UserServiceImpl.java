@@ -61,4 +61,18 @@ public class UserServiceImpl implements UserService {
 		return this.userDAO.userLoginCheck(user);
 	}
 
+	@Override
+	@Transactional
+	public User getUserByEmailId(User user) {
+		return this.userDAO.getUserByEmailId(user);
+	}
+
+	@Override
+	@Transactional
+	public User getUserByUserHash(User user) {
+		return this.userDAO.getUserByUserHash(user);
+	}
+	
+	
+
 }

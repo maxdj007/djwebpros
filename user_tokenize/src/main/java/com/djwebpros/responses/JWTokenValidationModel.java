@@ -8,6 +8,15 @@ package com.djwebpros.responses;
 public class JWTokenValidationModel extends ResponseModel {
 
 	private boolean tokenValid = false;
+	private boolean tokenExpired;
+
+	public boolean isTokenExpired() {
+		return tokenExpired;
+	}
+
+	public void setTokenExpired(boolean tokenExpired) {
+		this.tokenExpired = tokenExpired;
+	}
 
 	public boolean isTokenValid() {
 		return tokenValid;

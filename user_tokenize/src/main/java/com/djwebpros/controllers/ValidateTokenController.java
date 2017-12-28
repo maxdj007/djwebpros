@@ -45,7 +45,7 @@ public class ValidateTokenController {
 		JSONObject postJSONData = new JSONObject(postPayload);
 		ValidatedTokenResponseModel validatedTokenResponseModel = new ValidatedTokenResponseModel();
 		if(utility.validateRequest(postJSONData, headers, Constants.REQUEST_TYPE_VALIDATE_TOKEN).isRequestValid()){
-			boolean isValid = jwTokenValidator.isTokenStillValid(postJSONData.getString(Constants.POST_DATA_FIELD_TOKEN));
+			boolean isValid = jwTokenValidator.verifyJWT(postJSONData.getString(Constants.POST_DATA_FIELD_TOKEN)).isTokenExpired();
 			validatedTokenResponseModel.setError(false);
 			validatedTokenResponseModel.setMessage(Constants.STANDARD_SUCCESS_MESSAGE);
 			validatedTokenResponseModel.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_SUCCESS);

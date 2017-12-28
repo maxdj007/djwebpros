@@ -23,5 +23,9 @@ public interface UserDAO {
 	public List<User> listUsers();
 	
 	public LoginResponseModel userLoginCheck(User user);
+	
+	public User getUserByUserHash(User user);
+	
+	public User getUserByEmailId(User user);
 
 }

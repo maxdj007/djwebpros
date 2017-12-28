@@ -92,4 +92,37 @@ public class UserDAOImpl implements UserDAO {
 		return loginResponse;
 	}
 
+	@Override
+	public User getUserByUserHash(User givenUser) {
+		User user = new User();
+		EntityManager entityManager = sessionFactory.createEntityManager();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> query = builder.createQuery( User.class );
+		Root<User> root = query.from( User.class );
+		query.select(root).where(
+		    builder.and(
+		        builder.equal(root.get("userHash"), givenUser.getUserHash())
+		    )
+		);
+		user = entityManager.createQuery( query ).getSingleResult();
+		return user;
+	}
+
+	@Override
+	public User getUserByEmailId(User givenUser) {
+		User user = new User();
+		EntityManager entityManager = sessionFactory.createEntityManager();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<User> query = builder.createQuery( User.class );
+		Root<User> root = query.from( User.class );
+		query.select(root).where(
+		    builder.and(
+		        builder.equal(root.get("emailId"), givenUser.getEmailId())
+		    )
+		);
+		user = entityManager.createQuery( query ).getSingleResult();
+		return user;
+	}
+	
+
 }

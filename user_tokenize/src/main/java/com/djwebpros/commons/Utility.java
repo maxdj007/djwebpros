@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.djwebpros.JWT.JWTokenValidator;
 import com.djwebpros.models.User;
+import com.djwebpros.responses.JWTokenValidationModel;
 import com.djwebpros.responses.RequestValidationModel;
 import com.djwebpros.validator.ValidationFactory;
 
@@ -76,21 +77,34 @@ public class Utility {
 				validationResponse.setRequestValid(false);
 				return validationResponse;
 			}
-			if(!jwtokenValidator.verifyJWT(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN)).isTokenValid()){
-				logger.debug("invalid token found in request");
-				validationResponse.setError(true);
-				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
-				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Invalid.Token"));
-				validationResponse.setRequestValid(false);
-				return validationResponse;
-			}
-			if(!jwtokenValidator.isTokenStillValid(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN)) && !Constants.REQUEST_TYPE_RE_HANDSHAKE.equals(requestType)){
-				logger.debug("expired token found in request");
-				validationResponse.setError(true);
-				validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
-				validationResponse.setMessage(property.getProperty("Request.Validation.Error.Expired.Token"));
-				validationResponse.setRequestValid(false);
-				return validationResponse;
+			JWTokenValidationModel tokeValidation = jwtokenValidator.verifyJWT(httpHeaders.getFirst(Constants.POST_DATA_FIELD_TOKEN));
+			if(!tokeValidation.isTokenValid()){
+				if(Constants.REQUEST_TYPE_RE_HANDSHAKE.equals(requestType)){
+					if(!tokeValidation.isTokenExpired()){
+						logger.debug("invalid token found in request");
+						validationResponse.setError(true);
+						validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+						validationResponse.setMessage(property.getProperty("Request.Validation.Error.Invalid.Token"));
+						validationResponse.setRequestValid(false);
+						return validationResponse;
+					}
+				} else {
+					if(tokeValidation.isTokenExpired()){
+						logger.debug("expired token found in request");
+						validationResponse.setError(true);
+						validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+						validationResponse.setMessage(property.getProperty("Request.Validation.Error.Expired.Token"));
+						validationResponse.setRequestValid(false);
+						return validationResponse;
+					} else {
+						logger.debug("invalid token found in request");
+						validationResponse.setError(true);
+						validationResponse.setStatus(Constants.METHOD_CALL_RETURN_STATUS_VALUE_AUTHENTICATION_FAILURE);
+						validationResponse.setMessage(property.getProperty("Request.Validation.Error.Invalid.Token"));
+						validationResponse.setRequestValid(false);
+						return validationResponse;
+					}
+				}
 			}
 		}
 		JSONObject errorJson = new JSONObject();
