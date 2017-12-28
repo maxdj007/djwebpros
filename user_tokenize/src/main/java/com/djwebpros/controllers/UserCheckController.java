@@ -32,7 +32,7 @@ import com.djwebpros.service.UserService;
 @Controller
 public class UserCheckController {
 	
-	private Logger logger = Logger.getLogger(UserSignUpController.class);
+	private Logger logger = Logger.getLogger(UserCheckController.class);
 	
 	/**
 	 * Properties file loader
