@@ -1,14 +1,14 @@
 <?php
-
-class RegisterControls{
-	private static $_registeredControllers = array(
-			'component'    	=> array(
-					'Controller' => 'retrieve', 		
-					'Methods' => array('image')
+class RegisterControls {
+	private static $_registeredControllers = array (
+			"Retrieve" => array (
+					"image" 
+			), 
+			"ErrorHandler" => array(
+					"error"
 			)
 	);
-	
-	public function getRegisteredControllers(){
+	public function getRegisteredControllers() {
 		return $_registeredControllers;
 	}
 }

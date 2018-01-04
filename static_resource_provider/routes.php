@@ -2,34 +2,47 @@
 class Routes {
 	
 	// Contollers to be added to the app.
-	private $controllers = array ();
+	private $controllers = "";
+	private $controller = "";
+	private $action = "";
+	private $request = "";
 	
-	public function __construct(){
+	public function __construct($controller, $action, $request){
+		require_once('registerControls.php');
 		$registerControls = new RegisterControls();
-		$controllers = $registerControls->getRegisteredControllers();
+		$this->controllers = $registerControls->getRegisteredControllers();
+		$this->controller = $controller;
+		$this->action = $action;
+		$this->request = $request;
 	}
 	
-	function call($controller, $action) {
+	function call($controller, $action, $errorMessage="") {
 		require_once ('controllers/' . $controller . 'Controller.php');
 		
-		foreach($controllers as $key=>$value){
-			if($key === $controller){
-				$controller = new $controller();
-				break;
+		if($controller !== "errorHandler"){
+			foreach($this->controllers as $key=>$value){
+				if($key === $controller){
+					$controller = $controller."Controller";
+					$controller = new $controller($controller, $action, $this->request);
+					break;
+				}
 			}
+		} else {
+			$controller = new ErrorHandlerController($controller, $action, $this->request, $errorMessage);
 		}
 		
 		$controller->{ $action } ();
 	}
+	
 	public function initialize() {
-		if (array_key_exists ( $controller, $controllers )) {
-			if (in_array ( $action, $controllers [$controller] )) {
-				call ( $controller, $action );
+		if (array_key_exists ( $this->controller, $this->controllers)) {
+			if (in_array ( $action, $this->controllers[$controller] )) {
+				call ( $this->controller, $this->action );
 			} else {
-				call ( 'pages', 'error' );
+				call ( 'ErrorHandler', 'error', '' );
 			}
 		} else {
-			call ( 'pages', 'error' );
+			call ( 'ErrorHandler', 'error', '' );
 		}
 	}
 }
