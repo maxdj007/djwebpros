@@ -6,15 +6,17 @@ class Layout{
 	private $server = "";
 	private $rawPostData = "";
 	private $mergedRequest = "";
+	/** @var object */
+	private static $_instance;
 	
 	public function __construct(){
 		$this->request = $_REQUEST;
 		$this->server = $_SERVER;
-		$this->rawPostData = $HTTP_RAW_POST_DATA;
+		$this->rawPostData = file_get_contents("php://input");
 	}
 	public function letsGo(){
 		$this->mergedRequest = $this->mergeRequest();
-		require_once('../routes.php');
+		require_once('routes.php');
 		Routes::init($this->getController(),$this->getAction(),$this->mergedRequest)->initialize();
 	}
 	private function getController(){
@@ -27,6 +29,11 @@ class Layout{
 	}
 	private function mergeRequest(){
 		return array_merge($this->request, $this->server, array("RAW_DATA" =>$this->rawPostData));
+	}
+	
+	public static function init(){
+		if(self::$_instance == null) self::$_instance = new self();
+		return self::$_instance;
 	}
 }
 ?>

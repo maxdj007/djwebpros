@@ -1,6 +1,6 @@
 <?php
 class RegisterControls {
-	private static $_registeredControllers = array (
+	public $_registeredControllers = array (
 			"Retrieve" => array (
 					"image" 
 			), 
@@ -8,8 +8,9 @@ class RegisterControls {
 					"error"
 			)
 	);
+	
 	public function getRegisteredControllers() {
-		return $_registeredControllers;
+		return $this->_registeredControllers;
 	}
 }
 

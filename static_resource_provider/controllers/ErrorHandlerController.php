@@ -15,7 +15,7 @@ Class ErrorHandlerController{
 	}
 	
 	public function error(){
-		
+		echo json_encode(array("Error"=>"There were no parameters passed in the request"));
 	}
 	
 }

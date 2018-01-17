@@ -6,6 +6,8 @@ class Routes {
 	private $controller = "";
 	private $action = "";
 	private $request = "";
+	/** @var object */
+	private static $_instance;
 	
 	public function __construct($controller, $action, $request){
 		require_once('registerControls.php');
@@ -19,7 +21,7 @@ class Routes {
 	function call($controller, $action, $errorMessage="") {
 		require_once ('controllers/' . $controller . 'Controller.php');
 		
-		if($controller !== "errorHandler"){
+		if($controller !== "ErrorHandler"){
 			foreach($this->controllers as $key=>$value){
 				if($key === $controller){
 					$controller = $controller."Controller";
@@ -37,13 +39,18 @@ class Routes {
 	public function initialize() {
 		if (array_key_exists ( $this->controller, $this->controllers)) {
 			if (in_array ( $action, $this->controllers[$controller] )) {
-				call ( $this->controller, $this->action );
+				$this->call($this->controller, $this->action);
 			} else {
-				call ( 'ErrorHandler', 'error', '' );
+				$this->call ( 'ErrorHandler', 'error', '' );
 			}
 		} else {
-			call ( 'ErrorHandler', 'error', '' );
+			$this->call ( 'ErrorHandler', 'error', '' );
 		}
+	}
+	
+	public static function init($controller, $action, $request){
+		if(self::$_instance == null) self::$_instance = new self($controller, $action, $request);
+		return self::$_instance;
 	}
 }
 ?>
