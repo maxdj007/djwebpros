@@ -1,5 +1,5 @@
 <?php
-
+require_once ('./constants/constants.php');
 class Layout{
 	
 	private $request = "";
@@ -21,11 +21,11 @@ class Layout{
 	}
 	private function getController(){
 		$uriSegments = explode("/", parse_url($this->mergedRequest['REQUEST_URI'], PHP_URL_PATH));
-		return $uriSegments[1];
+		return $uriSegments[2];
 	}
 	private function getAction(){
 		$uriSegments = explode("/", parse_url($this->mergedRequest['REQUEST_URI'], PHP_URL_PATH));
-		return $uriSegments[2];
+		return $uriSegments[3];
 	}
 	private function mergeRequest(){
 		return array_merge($this->request, $this->server, array("RAW_DATA" =>$this->rawPostData));

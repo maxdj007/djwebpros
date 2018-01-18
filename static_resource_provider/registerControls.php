@@ -6,6 +6,9 @@ class RegisterControls {
 			), 
 			"ErrorHandler" => array(
 					"error"
+			),
+			"CheckToken" => array(
+					"checkToken"
 			)
 	);
 	

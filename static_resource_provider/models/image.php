@@ -1,14 +1,11 @@
 <?php
-class Image {
+class Image implements JsonSerializable{
 	private $id;
 	private $name;
 	private $owner;
 	private $scope;
-	public function __construct($id, $name, $owner, $scope) {
-		$this->id = $id;
-		$this->name = $name;
-		$this->owner = $owner;
-		$this->scope = $scope;
+	public function __construct() {
+		
 	}
 	public function getImageById($imageId) {
 		$db = Db::getInstance ();
@@ -87,6 +84,16 @@ class Image {
 		$this->owner = $owner;
 		$this->scope = $scope;
 	}
+	
+	public function jsonSerialize() {
+		return [
+				'id' => $this->id,
+				'name' => $this->name,
+				'owner' => $this->owner,
+				'scope' => $this->scope
+		];
+	}
+	
 
 }
 ?>

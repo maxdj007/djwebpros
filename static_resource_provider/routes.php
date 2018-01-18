@@ -30,15 +30,15 @@ class Routes {
 				}
 			}
 		} else {
-			$controller = new ErrorHandlerController($controller, $action, $this->request, $errorMessage);
+			$controller = new ErrorHandlerController($controller, $action, $this->request, $this->request);
 		}
 		
-		$controller->{ $action } ();
+		$controller->{ $this->action } ();
 	}
 	
 	public function initialize() {
 		if (array_key_exists ( $this->controller, $this->controllers)) {
-			if (in_array ( $action, $this->controllers[$controller] )) {
+			if (in_array ( $this->action, $this->controllers[$this->controller] )) {
 				$this->call($this->controller, $this->action);
 			} else {
 				$this->call ( 'ErrorHandler', 'error', '' );
