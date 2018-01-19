@@ -1,5 +1,5 @@
 <?php
-class Image implements JsonSerializable{
+class ImageModel implements JsonSerializable{
 	private $id;
 	private $name;
 	private $owner;
@@ -36,7 +36,7 @@ class Image implements JsonSerializable{
 				'owner' => $imageOwner
 		) );
 		foreach ( $req->fetchAll () as $post ) {
-			$list [] = new Image ( $image ['id'], $image ['name'], $image ['owner'], $image ['scope'] );
+			$list [] = new ImageModel( $image ['id'], $image ['name'], $image ['owner'], $image ['scope'] );
 		}
 		
 		return $list;
@@ -49,7 +49,7 @@ class Image implements JsonSerializable{
 				'scope' => $imageScope
 		) );
 		foreach ( $req->fetchAll () as $post ) {
-			$list [] = new Image ( $image ['id'], $image ['name'], $image ['owner'], $image ['scope'] );
+			$list [] = new ImageModel( $image ['id'], $image ['name'], $image ['owner'], $image ['scope'] );
 		}
 		
 		return $list;

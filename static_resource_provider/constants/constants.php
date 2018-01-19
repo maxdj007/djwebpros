@@ -29,13 +29,15 @@ define("POST_PARAMETERS_VIDEO_SCOPE", "scope");
 //Internal Constants
 define("SCOPE_TYPE_PRIVATE", "private");
 define("SCOPE_TYPE_PUBLIC", "public");
-define("SCOPE_TYPE_PROTACTED", "protected");
+define("SCOPE_TYPE_PROTECTED", "protected");
 
 //JWT related variables
 define("JWT_SECRET_KEY", "ThisIsJuStThETeStStRiNgSeCrEtKeY");
 define("JWT_AUTHOR", "secretAuthor");
 define("JWT_TOKEN_EXPIRATION_TIME", "28800000");
-define("JWT_AUDIENCE_GUEST", "GUEST")
+define("JWT_AUDIENCE_GUEST", "GUEST");
+define("JWT_EXCEPTION_TOKEN_EXPIRED", "The token attached with the request has expired.");
+define("JWT_EXCEPTION_TOKEN_INVALID", "The token attached with the request is invalid.");
 
 
 ?>

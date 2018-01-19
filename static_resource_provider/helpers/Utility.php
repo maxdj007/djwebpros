@@ -7,11 +7,21 @@ class Utility{
 	}
 	
 	public function checkImageOwner($image, $owner){
-		if($image->owner != $owner){
+		if($image->getOwner() != $owner){
 			echo json_encode(array("error"=>true, "message"=>ERROR_UNAUTHORIZED_RESOURCE));
 			exit();
 		} else {
 			return true;
+		}
+	}
+	
+	public function checkJWTException($exception){
+		if(strpos($exception, "ExpiredException") !== false){
+			echo json_encode(array("error"=>true, "message"=>JWT_EXCEPTION_TOKEN_EXPIRED));
+			exit();
+		} else {
+			echo json_encode(array("error"=>true, "message"=>JWT_EXCEPTION_TOKEN_INVALID));
+			exit();
 		}
 	}
 	

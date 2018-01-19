@@ -1,7 +1,5 @@
 <?php
 require_once('Controller.php');
-require_once ('./helpers/RequestDataHelper.php');
-require_once ('./helpers/Utility.php');
 class RetrieveController extends Controller {
 	
 	public function __construct($controller, $action, $request) {
@@ -15,8 +13,7 @@ class RetrieveController extends Controller {
 	public function image() {
 		// here we take out the image from the database to return.
 		if(sizeof($parameters = $this->requestDataHelper->convertJSONToArray($this->request[POST_PARAMETERS_RAW_DATA])) != 0){
-			require_once ('./models/image.php');
-			$image = new Image();
+			$image = new ImageModel();
 			$image->getImageById($parameters[POST_PARAMETERS_IMAGE_ID]);
 			if($image->getId() == null){
 				echo json_encode(array('error'=>true,'message'=>ERROR_RESOURCE_NOT_FOUND));
@@ -26,7 +23,7 @@ class RetrieveController extends Controller {
 						echo json_encode($image);
 						exit();
 					}
-				} else if ($image->getScope() == SCOPE_TYPE_PROTACTED){
+				} else if ($image->getScope() == SCOPE_TYPE_PROTECTED){
 					//something TODO here
 				} else {
 					echo json_encode($image);

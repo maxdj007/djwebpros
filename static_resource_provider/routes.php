@@ -19,8 +19,7 @@ class Routes {
 	}
 	
 	function call($controller, $action, $errorMessage="") {
-		require_once ('controllers/' . $controller . 'Controller.php');
-		
+				
 		if($controller !== "ErrorHandler"){
 			foreach($this->controllers as $key=>$value){
 				if($key === $controller){
@@ -30,10 +29,10 @@ class Routes {
 				}
 			}
 		} else {
-			$controller = new ErrorHandlerController($controller, $action, $this->request, $this->request);
+			$controller = new ErrorHandlerController($controller, $action, $this->request, $errorMessage);
 		}
 		
-		$controller->{ $this->action } ();
+		$controller->{ $action } ();
 	}
 	
 	public function initialize() {
