@@ -19,12 +19,12 @@ spl_autoload_register(function ($class) {
 	} 
 });
 
-/*function __get($key){
+function __get($key){
 	return $this->$key;
 }
 
 function __set($key, $value){
 	$this->$key = $value;
-}*/
+}
 
 ?>

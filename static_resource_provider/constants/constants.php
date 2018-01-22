@@ -1,6 +1,7 @@
 <?php
 //All error messages
 define("ERROR_NO_PARAMETERS", "There were no parameters passed in the request");
+define("ERROR_NO_HEADER_TOKEN", "No token was found attacthed to the given request.");
 define("ERROR_UNAUTHORIZED_ACCESS", "You do not have the permission to access this service");
 define("ERROR_TOKEN_EXPIRED", "The Token attached to the request has expired");
 define("ERROR_INVALID_TOKEN", "The Token attached to this request is invalid");

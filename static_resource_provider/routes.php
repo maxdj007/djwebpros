@@ -6,6 +6,7 @@ class Routes {
 	private $controller = "";
 	private $action = "";
 	private $request = "";
+	private $validator = "";
 	/** @var object */
 	private static $_instance;
 	
@@ -16,6 +17,7 @@ class Routes {
 		$this->controller = $controller;
 		$this->action = $action;
 		$this->request = $request;
+		$this->validator = new TokenValidatorImpl();
 	}
 	
 	function call($controller, $action, $errorMessage="") {
@@ -36,6 +38,12 @@ class Routes {
 	}
 	
 	public function initialize() {
+		if($this->validator->validateToken(getallheaders())){
+			$this->callControlers();
+		}
+	}
+	
+	public function callControlers(){
 		if (array_key_exists ( $this->controller, $this->controllers)) {
 			if (in_array ( $this->action, $this->controllers[$this->controller] )) {
 				$this->call($this->controller, $this->action);
