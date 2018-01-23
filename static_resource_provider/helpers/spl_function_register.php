@@ -16,7 +16,9 @@ spl_autoload_register(function ($class) {
 		include "models".DIRECTORY_SEPARATOR."".$class.".php";
 	} else if (strpos($class, "Validator") !== false) {
 		include "validators".DIRECTORY_SEPARATOR."".$class.".php";
-	} 
+	} else if (strpos($class, "Response") !== false) {
+		include "responses".DIRECTORY_SEPARATOR."".$class.".php";
+	}
 });
 
 function __get($key){

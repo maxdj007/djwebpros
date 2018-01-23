@@ -25,6 +25,14 @@ class Utility{
 		}
 	}
 	
+	public function calculateURL($filename){
+		// TODO: the logic to create the URL for the resource
+	}
+	
+	public function sterialiseFilename($filename){
+		
+	}
+	
 }
 
 ?>
